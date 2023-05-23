@@ -105,6 +105,7 @@ import leva104 from "../assets/images/leva16x9/leva strana 16x9_00103.png";
 import leva105 from "../assets/images/leva16x9/leva strana 16x9_00104.png";
 import leva106 from "../assets/images/leva16x9/leva strana 16x9_00105.png";
 import leva107 from "../assets/images/leva16x9/leva strana 16x9_00106.png";
+import leva108 from "../assets/images/leva16x9/leva strana 16x9_00107.png";
 
 const leva = [
   leva1,
@@ -214,6 +215,7 @@ const leva = [
   leva105,
   leva106,
   leva107,
+  leva108,
 ];
 
 export default leva;

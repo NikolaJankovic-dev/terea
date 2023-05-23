@@ -23,6 +23,18 @@ const Incorrect = ({incorrect, setIncorrect}) => {
     return () => clearInterval(interval);
   }, [incorrect, direction, animationDone]); // include new state in dependency array
 
+// 
+
+// preload images
+ useEffect(() => {
+    netacno.forEach((image) => {
+        const img = new Image();
+        img.src = image;
+    });
+}, []);
+
+
+
   return (
     <img
       src={netacno[incorrect % netacno.length]}
@@ -31,7 +43,10 @@ const Incorrect = ({incorrect, setIncorrect}) => {
         position: "absolute",
         top: "50%",
         left: "50%",
-        transform: "translate(-50%, -50%)",
+        transform: "translate(-50%, -70%)",
+        maxBlockSize: "30vh",
+        zIndex: "100",
+
       }}
     />
   );

@@ -22,6 +22,15 @@ const Correct = ({correct, setCorrect}) => {
     return () => clearInterval(interval);
   }, [correct, direction, animationDone]); // include new state in dependency array
 
+//preload images
+    useEffect(() => {
+        tacno.forEach((image) => {
+            const img = new Image();
+            img.src = image;
+        });
+    }, []);
+
+
   return (
     <img
       src={tacno[correct % tacno.length]}
@@ -30,7 +39,9 @@ const Correct = ({correct, setCorrect}) => {
         position: "absolute",
         top: "50%",
         left: "50%",
-        transform: "translate(-50%, -50%)",
+        transform: "translate(-50%, -70%)",
+        maxBlockSize: "30vh",
+        zIndex: "100",
       }}
     />
   );
