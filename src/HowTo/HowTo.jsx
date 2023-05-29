@@ -1,29 +1,45 @@
 import React, { useState, useEffect } from "react";
 import packs from "../assets/images/howto/packs.png";
+import s2 from "../assets/images/howto/s2.png";
 import Left from "../components/Left";
 import Right from "../components/Right";
 import desna from "../ImagesExport/desna16x9";
 import desna9x16 from "../ImagesExport/desna9x16";
 import Wheel from "../components/Wheel";
 
-const HowTo = ({ isLandscape, appPhase, setAppPhase }) => {
+const HowTo = ({
+  isLandscape,
+  appPhase,
+  setAppPhase,
+  setLeftImagesLoaded,
+  setRightImagesLoaded,
+}) => {
   const [rotation, setRotation] = useState(0);
   const [right, setRight] = useState(0);
 
   useEffect(() => {
-    if (appPhase === 0) {
+    // if (appPhase === 0) {
+    //   const interval = setInterval(() => {
+    //     setAppPhase(1);
+    //   }, 1000);
+
+    //   return () => {
+    //     clearInterval(interval);
+    //   };
+    // }
+    if (appPhase === 2) {
       const interval = setInterval(() => {
-        setAppPhase(1);
-      }, 1000);
+        setAppPhase(3);
+      }, 4000);
 
       return () => {
         clearInterval(interval);
       };
     }
-    if (appPhase === 2) {
+    if (appPhase === 4) {
       const interval = setInterval(() => {
-        setAppPhase(3);
-      }, 4000);
+        setAppPhase(5);
+      }, 400);
 
       return () => {
         clearInterval(interval);
@@ -70,13 +86,15 @@ const HowTo = ({ isLandscape, appPhase, setAppPhase }) => {
         opacity: `${appPhase < 4 ? 1 : 0}`,
         borderRadius: `${appPhase < 2 ? 0 : 2}rem`,
         transition:
-          "scale 3s ease 0s, opacity 2s ease 0s, border-radius 1s ease 1s, background-color 3s ease 1s",
+          "scale 1s ease 2s, opacity 2s ease 0s, border-radius 1s ease 2s, background-color 3s ease 1s",
         overflow: "hidden",
       }}
     >
       <div
         style={{
           display: "flex",
+          flexDirection: isLandscape ? "row" : "column",
+
           justifyContent: "space-evenly",
           alignItems: "center",
           height: "100%",
@@ -90,16 +108,16 @@ const HowTo = ({ isLandscape, appPhase, setAppPhase }) => {
             // top: "0",
             // left: "0",
             // width: "100%",
-            height: "48%",
+            height: isLandscape ? "48%" : "28%",
             rotate: `${appPhase === 1 ? -360 : -90}deg`,
             transform: `scale(${appPhase === 1 ? 1 : 0})`,
-            transition: "all 4s ease",
+            transition: "all 2s ease",
           }}
         />
         <div
           style={{
             opacity: appPhase === 1 ? 1 : 0,
-            transition: "all 3s ease 1s",
+            transition: "all 1s ease 0.5s",
             color: "white",
             position: "relative",
           }}
@@ -139,16 +157,39 @@ const HowTo = ({ isLandscape, appPhase, setAppPhase }) => {
           transition: "all 3s ease 2s",
         }}
       >
-        <Left left={0} isLandscape={isLandscape} />
+        <Left
+          left={0}
+          isLandscape={isLandscape}
+          setLeftImagesLoaded={setLeftImagesLoaded}
+        />
         {/* <Wheel isLandscape={isLandscape} /> */}
+        <div
+          style={{
+            position: "absolute",
+            top: "0%",
+            right: "50%",
+            transform: isLandscape
+              ? "translate(50%, 50%)"
+              : "translate(-50%, 50%)",
+            color: "white",
+            fontSize: isLandscape ? "5vh" : "5vw",
+            textAlign: "center",
+            fontWeight: "bold",
+            display: isLandscape ? "flex" : "none",
+          }}
+        >
+          {" "}
+          MATCH THE
+          <br /> TEREA PACK <br /> WITH HEETS PACK
+        </div>
         <div
           style={{
             width: isLandscape ? "25vh" : "25vw",
             height: isLandscape ? "25vh" : "25vw",
             position: "absolute",
-            right: isLandscape ? "50%" : "20%",
-            bottom: "10%",
-            transform: "translate(50%, -0%)",
+            right: isLandscape ? "50%" : "15%",
+            bottom: isLandscape ? "0%" : "5%",
+            transform: "translate(50%, -50%)",
             zIndex: "100",
             borderRadius: "50%",
           }}
@@ -159,13 +200,26 @@ const HowTo = ({ isLandscape, appPhase, setAppPhase }) => {
           }}
         >
           <Wheel rotation={rotation} isLandscape={isLandscape} />
+          <img
+            src={s2}
+            alt="s2"
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
+              zIndex: "100",
+              borderRadius: "50%",
+              width: "120%",
+            }}
+          />
           <p
             style={{
               position: "absolute",
               bottom: "0",
               left: "50%",
               transform: "translate(-50%, 100%)",
-              padding: "30px",
+              padding: isLandscape ? "30px" : "10px",
               whiteSpace: "nowrap",
               color: "white",
             }}
@@ -176,7 +230,12 @@ const HowTo = ({ isLandscape, appPhase, setAppPhase }) => {
           </p>
         </div>
         {images && (
-          <Right right={right} isLandscape={isLandscape} images={images} />
+          <Right
+            right={right}
+            isLandscape={isLandscape}
+            images={images}
+            setRightImagesLoaded={setRightImagesLoaded}
+          />
         )}
       </div>
     </div>

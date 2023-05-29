@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import netacno from "../ImagesExport/netacno";
 
-const Incorrect = ({incorrect, setIncorrect}) => {
-//   const [incorrect, setIncorrect] = useState(1);
+const Incorrect = ({ incorrect, setIncorrect }) => {
+  //   const [incorrect, setIncorrect] = useState(1);
   const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
   const [animationDone, setAnimationDone] = useState(false); // new state to track if animation is done
+  const [imagesLoaded, setImagesLoaded] = useState(false);
 
   useEffect(() => {
-    if (animationDone) return; // if animation is done, don't set up the interval
+    if (!imagesLoaded || animationDone) return; // if images are not loaded or animation is done, don't set up the interval
 
     const interval = setInterval(() => {
       setIncorrect((incorrect) => incorrect + direction);
@@ -21,19 +22,28 @@ const Incorrect = ({incorrect, setIncorrect}) => {
     }
 
     return () => clearInterval(interval);
-  }, [incorrect, direction, animationDone]); // include new state in dependency array
+  }, [incorrect, direction, animationDone, imagesLoaded]); // include new state in dependency array
 
-// 
+  //
 
-// preload images
- useEffect(() => {
-    netacno.forEach((image) => {
-        const img = new Image();
-        img.src = image;
+  // preload images
+  useEffect(() => {
+    if (!netacno.length) return;
+    Promise.all(
+      netacno.map(
+        (src) =>
+          new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = resolve;
+            img.onerror = reject;
+            img.src = src;
+          })
+      )
+    ).then(() => {
+      console.log("Images loaded");
+      setImagesLoaded(true); // set imagesLoaded to true when all images are loaded
     });
-}, []);
-
-
+  }, []);
 
   return (
     <img
@@ -46,7 +56,6 @@ const Incorrect = ({incorrect, setIncorrect}) => {
         transform: "translate(-50%, -70%)",
         maxBlockSize: "30vh",
         zIndex: "100",
-
       }}
     />
   );
